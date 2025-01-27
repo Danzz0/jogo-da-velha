@@ -7,6 +7,55 @@
     <title>jogo da velha</title>
    
     <link rel="stylesheet" href="style.css">
+
+    <!-- biblioteca de js para algumas funcionalidades do jogo  -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script> 
+
+
+    <script>
+
+
+        // $(document).load(()=>{
+
+        // })
+
+        var matriz = [
+            [document.getElementById("0"), document.getElementById("1") , document.getElementById("2")],
+            [document.getElementById("3"), document.getElementById("4") , document.getElementById("5")],
+            [document.getElementById("6"), document.getElementById("7") , document.getElementById("8")]
+        ];
+        
+
+        function apertouBotao(id){
+            let campo = parseInt(document.getElementById(id).id)
+            
+
+
+            if(campo >= 0 && campo <= 2){
+
+                
+                // if(jogador x){
+                //     matriz[0][campo] = "X"
+                // } else {
+                //     matriz[0][campo] = "O"
+                // }
+
+                matriz[0][campo] = "X"
+            } else if( campo > 2 && campo <= 5 ) {
+                matriz[1][campo-3] = "X"
+            } else{
+                matriz[2][campo-6] = "X"
+            }
+            document.getElementById(id).textContent = "oi"
+
+            console.log(matriz)
+        }
+
+
+
+
+    </script>
+
 </head>
 
 <body>
@@ -23,15 +72,15 @@
 
 
     <div class="board" data-board> <!-- tabuleiro -->
-        <div class="cell"data-cell></div>
-        <div class="cell"data-cell></div>
-        <div class="cell"data-cell></div>
-        <div class="cell"data-cell></div>
-        <div class="cell"data-cell></div>
-        <div class="cell"data-cell></div>
-        <div class="cell"data-cell></div>
-        <div class="cell"data-cell></div>
-        <div class="cell"data-cell></div>
+        <div class="cell" data-cell value="false" ><button id="0" onclick="apertouBotao(0)"></button></div>
+        <div class="cell" data-cell value="false" ><button id="1" onclick="apertouBotao(1)"></button></div>
+        <div class="cell" data-cell value="false" ><button id="2" onclick="apertouBotao(2)"></button></div>
+        <div class="cell" data-cell value="false" ><button id="3" onclick="apertouBotao(3)"></button></div>
+        <div class="cell" data-cell value="false" ><button id="4" onclick="apertouBotao(4)"></button></div>
+        <div class="cell" data-cell value="false" ><button id="5" onclick="apertouBotao(5)"></button></div>
+        <div class="cell" data-cell value="false" ><button id="6" onclick="apertouBotao(6)"></button></div>
+        <div class="cell" data-cell value="false" ><button id="7" onclick="apertouBotao(7)"></button></div>
+        <div class="cell" data-cell value="false" ><button id="8" onclick="apertouBotao(8)"></button></div>
     </div>
 
 
@@ -52,6 +101,7 @@
          <!-- colocar a vez do jogador (vez X/ vez O) -->
      </div>
     
+     <button value="oi">oi</button>
 
     
 </body>
