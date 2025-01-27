@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jogo da velha</title>
+   
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="titulo">
+        <h1>
+            Jogo da velha
+        </h1>
+    </div>  
+    
+
+    
+
+
+
+    <div class="board" data-board> <!-- tabuleiro -->
+        <div class="cell"data-cell></div>
+        <div class="cell"data-cell></div>
+        <div class="cell"data-cell></div>
+        <div class="cell"data-cell></div>
+        <div class="cell"data-cell></div>
+        <div class="cell"data-cell></div>
+        <div class="cell"data-cell></div>
+        <div class="cell"data-cell></div>
+        <div class="cell"data-cell></div>
+    </div>
+
+
+    <div class="inputs">
+        <label for="jogador1">jogador O:</label>
+            <input type="text" name="bola" id="jogador1" required>
+         <label for="jogador2">jogador x:</label>
+            <input type="text" name="xis" id="jogador2" required>
+    </div>   
+
+    <div class="wining-message">
+        <p> X venceu! </p> <!-- essa mensagem tem q ser substituida com js dependendo de qm ganhar -->
+    </div>
+
+    
+    <div id="turn">
+        <p>ablublublé</p>
+         <!-- colocar a vez do jogador (vez X/ vez O) -->
+     </div>
+    
+
+    
+</body>
+</html>
