@@ -4,105 +4,135 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>jogo da velha</title>
-   
+    <title>Jogo da Velha</title>
     <link rel="stylesheet" href="style.css">
 
     <!-- biblioteca de js para algumas funcionalidades do jogo  -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script> 
-
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script>
-
-
-        // $(document).load(()=>{
-
-        // })
-
-        var matriz = [
-            [document.getElementById("0"), document.getElementById("1") , document.getElementById("2")],
-            [document.getElementById("3"), document.getElementById("4") , document.getElementById("5")],
-            [document.getElementById("6"), document.getElementById("7") , document.getElementById("8")]
+        let matriz = [
+            ["", "", ""],
+            ["", "", ""],
+            ["", "", ""]
         ];
-        
 
-        function apertouBotao(id){
-            let campo = parseInt(document.getElementById(id).id)
-            
+        let jogadorAtual = "X";
+        let vencedor = null;
+        let jogadores = { X: "", O: "" };
 
+        function iniciarJogo() {
+            const nomeX = document.getElementById("jogador2").value || "Jogador X";
+            const nomeO = document.getElementById("jogador1").value || "Jogador O";
 
-            if(campo >= 0 && campo <= 2){
+            jogadores.X = nomeX;
+            jogadores.O = nomeO;
 
-                
-                // if(jogador x){
-                //     matriz[0][campo] = "X"
-                // } else {
-                //     matriz[0][campo] = "O"
-                // }
-
-                matriz[0][campo] = "X"
-            } else if( campo > 2 && campo <= 5 ) {
-                matriz[1][campo-3] = "X"
-            } else{
-                matriz[2][campo-6] = "X"
-            }
-            document.getElementById(id).textContent = "oi"
-
-            console.log(matriz)
+            document.querySelector(".start-screen").style.display = "none";
+            document.querySelector(".game-container").style.display = "block";
+            document.getElementById("turn").textContent = `Vez do jogador: ${jogadores[jogadorAtual]}`;
         }
 
+        function apertouBotao(id) {
+            if (vencedor) return; // Impede jogadas após o jogo terminar
 
+            let linha = Math.floor(id / 3);
+            let coluna = id % 3;
 
+            if (matriz[linha][coluna] === "") {
+                matriz[linha][coluna] = jogadorAtual;
+                document.getElementById(id).textContent = jogadorAtual;
 
+                if (verificarVitoria()) {
+                    document.querySelector(".wining-message p").textContent = `${jogadores[jogadorAtual]} venceu!`;
+                    document.querySelector(".wining-message").style.display = "flex";
+                    vencedor = jogadorAtual;
+                    setTimeout(reiniciarJogo, 3000);
+                } else if (matriz.flat().every(cell => cell !== "")) {
+                    document.querySelector(".wining-message p").textContent = "Empate!";
+                    document.querySelector(".wining-message").style.display = "flex";
+                    setTimeout(reiniciarJogo, 3000);
+                } else {
+                    jogadorAtual = jogadorAtual === "X" ? "O" : "X";
+                    document.getElementById("turn").textContent = `Vez do jogador: ${jogadores[jogadorAtual]}`;
+                }
+            }
+        }
+
+        function verificarVitoria() {
+            for (let i = 0; i < 3; i++) {
+                if (matriz[i][0] === jogadorAtual && matriz[i][1] === jogadorAtual && matriz[i][2] === jogadorAtual) return true;
+                if (matriz[0][i] === jogadorAtual && matriz[1][i] === jogadorAtual && matriz[2][i] === jogadorAtual) return true;
+            }
+
+            if (matriz[0][0] === jogadorAtual && matriz[1][1] === jogadorAtual && matriz[2][2] === jogadorAtual) return true;
+            if (matriz[0][2] === jogadorAtual && matriz[1][1] === jogadorAtual && matriz[2][0] === jogadorAtual) return true;
+
+            return false;
+        }
+
+        function reiniciarJogo() {
+            matriz = [
+                ["", "", ""],
+                ["", "", ""],
+                ["", "", ""]
+            ];
+
+            jogadorAtual = "X";
+            vencedor = null;
+
+            document.querySelectorAll(".cell button").forEach(button => (button.textContent = ""));
+            document.querySelector(".wining-message").style.display = "none";
+            document.getElementById("turn").textContent = `Vez do jogador: ${jogadores[jogadorAtual]}`;
+        }
+
+        function voltarMenu() {
+            document.querySelector(".start-screen").style.display = "flex";
+            document.querySelector(".game-container").style.display = "none";
+            document.querySelector(".wining-message").style.display = "none";
+        }
     </script>
-
 </head>
-
 <body>
-
-    <div class="titulo">
-        <h1>
-            Jogo da velha
-        </h1>
-    </div>  
-    
-
-    
-
-
-
-    <div class="board" data-board> <!-- tabuleiro -->
-        <div class="cell" data-cell value="false" ><button id="0" onclick="apertouBotao(0)"></button></div>
-        <div class="cell" data-cell value="false" ><button id="1" onclick="apertouBotao(1)"></button></div>
-        <div class="cell" data-cell value="false" ><button id="2" onclick="apertouBotao(2)"></button></div>
-        <div class="cell" data-cell value="false" ><button id="3" onclick="apertouBotao(3)"></button></div>
-        <div class="cell" data-cell value="false" ><button id="4" onclick="apertouBotao(4)"></button></div>
-        <div class="cell" data-cell value="false" ><button id="5" onclick="apertouBotao(5)"></button></div>
-        <div class="cell" data-cell value="false" ><button id="6" onclick="apertouBotao(6)"></button></div>
-        <div class="cell" data-cell value="false" ><button id="7" onclick="apertouBotao(7)"></button></div>
-        <div class="cell" data-cell value="false" ><button id="8" onclick="apertouBotao(8)"></button></div>
+    <div class="start-screen" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; background: linear-gradient(to right, #57c1eb, #246fa8); color: white;">
+        <h1>Jogo da Velha</h1>
+        <div class="inputs">
+            <label for="jogador1">Jogador O:</label>
+            <input type="text" name="bola" id="jogador1">
+            <label for="jogador2">Jogador X:</label>
+            <input type="text" name="xis" id="jogador2">
+        </div>
+        <button onclick="iniciarJogo()" style="margin-top: 20px; padding: 10px 20px; font-size: 1rem; background-color: #fff; color: #246fa8; border: none; border-radius: 5px; cursor: pointer;">Começar Jogo</button>
     </div>
 
+    <div class="game-container" style="display: none;">
+        <div class="titulo">
+            <h1>Jogo da Velha</h1>
+        </div>  
 
-    <div class="inputs">
-        <label for="jogador1">jogador O:</label>
-            <input type="text" name="bola" id="jogador1" required>
-         <label for="jogador2">jogador x:</label>
-            <input type="text" name="xis" id="jogador2" required>
-    </div>   
+        <div class="board" data-board>
+            <div class="cell" data-cell><button id="0" onclick="apertouBotao(0)"></button></div>
+            <div class="cell" data-cell><button id="1" onclick="apertouBotao(1)"></button></div>
+            <div class="cell" data-cell><button id="2" onclick="apertouBotao(2)"></button></div>
+            <div class="cell" data-cell><button id="3" onclick="apertouBotao(3)"></button></div>
+            <div class="cell" data-cell><button id="4" onclick="apertouBotao(4)"></button></div>
+            <div class="cell" data-cell><button id="5" onclick="apertouBotao(5)"></button></div>
+            <div class="cell" data-cell><button id="6" onclick="apertouBotao(6)"></button></div>
+            <div class="cell" data-cell><button id="7" onclick="apertouBotao(7)"></button></div>
+            <div class="cell" data-cell><button id="8" onclick="apertouBotao(8)"></button></div>
+        </div>
 
-    <div class="wining-message">
-        <p> X venceu! </p> <!-- essa mensagem tem q ser substituida com js dependendo de qm ganhar -->
+        <div class="wining-message" style="display: none; justify-content: center; align-items: center; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.8); color: white;">
+            <div style="text-align: center;">
+                <p></p>
+                <button onclick="voltarMenu()" style="padding: 10px 20px; background-color: #fff; color: #246fa8; border: none; border-radius: 5px; cursor: pointer;">Voltar ao Menu</button>
+            </div>
+        </div>
+
+        <div id="turn">
+            <p>Vez do jogador: X</p>
+        </div>
+
+        <button onclick="reiniciarJogo()">Reiniciar</button>
     </div>
-
-    
-    <div id="turn">
-        <p>ablublublé</p>
-         <!-- colocar a vez do jogador (vez X/ vez O) -->
-     </div>
-    
-     <button value="oi">oi</button>
-
-    
 </body>
 </html>
